@@ -1,43 +1,137 @@
 {% extends "base.html" %}
 {% block title %}Photographies — AstroSite{% endblock %}
 
+{% block extra_css %}
+<style>
+  /* Structure du Formulaire repensée */
+  .upload-section {
+    background: #1a0b2e;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border-left: 4px solid #00f2ff;
+    margin-bottom: 3rem;
+  }
+
+  /* Nouvelle structure des cartes : Portfolio Immersif */
+  .immersive-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 280px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+  }
+
+  .immersive-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  /* Le calque qui apparaît au survol */
+  .card-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to top, rgba(15, 5, 29, 0.95) 0%, rgba(26, 11, 46, 0.4) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px;
+    opacity: 0; /* Caché par défaut */
+    transition: opacity 0.3s ease;
+  }
+
+  /* Animations au survol */
+  .immersive-card:hover img {
+    transform: scale(1.1);
+  }
+  .immersive-card:hover .card-overlay {
+    opacity: 1; /* Apparaît au survol */
+  }
+
+  /* Typographie interne */
+  .overlay-title { color: #00f2ff; font-weight: bold; margin-bottom: 5px; font-size: 1.2rem; }
+  .overlay-desc { color: #e0d5f0; font-size: 0.9rem; margin-bottom: 15px; }
+  .overlay-meta { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-top: 1px solid rgba(179, 138, 221, 0.3);
+    padding-top: 10px;
+    font-size: 0.8rem;
+    color: #b38add;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="hero-banner">
-  <h1><i class="bi bi-images"></i> Photographies</h1>
-  <p>Les plus belles images du ciel par notre communauté</p>
+  <h1><i class="bi bi-camera-fill"></i> Galerie Stellaire</h1>
+  <p>Explorez les confins de l'univers à travers l'objectif de notre communauté</p>
 </div>
 
 <div class="container mt-5">
+  
+  <div class="upload-section">
+    <h5 style="color:#00f2ff; margin-bottom: 20px;"><i class="bi bi-cloud-arrow-up"></i> Nouvelle observation</h5>
+    <form action="{{ url_for('ajouter_photo') }}" method="POST">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <input type="text" name="titre" class="form-control" placeholder="Titre de l'astre" required>
+        </div>
+        <div class="col-md-4">
+          <input type="url" name="url" class="form-control" placeholder="Lien vers l'image" required>
+        </div>
+        <div class="col-md-3">
+          <input type="text" name="description" class="form-control" placeholder="Détails de la capture...">
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-astro w-100" style="background-color:#00f2ff; color:#1a0b2e;">Publier</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
   {% if photos %}
-  <div class="row g-4">
+  <div class="row g-4 mb-5">
     {% for photo in photos %}
     <div class="col-sm-6 col-lg-4">
-      <div class="card photo-card h-100">
-        <img src="{{ photo.url }}" alt="{{ photo.titre }}"
-             onerror="this.src='https://via.placeholder.com/400x200/0d1b35/f0c060?text=Image+non+disponible'" />
-        <div class="card-body">
-          <h6 class="card-title" style="color:#f0c060;">{{ photo.titre }}</h6>
+      <div class="immersive-card">
+        <img src="{{ photo.url }}" alt="{{ photo.titre }}" onerror="this.src='https://via.placeholder.com/400x300/1a0b2e/00f2ff?text=Signal+Perdu'" />
+        
+        <div class="card-overlay">
+          <div class="overlay-title">{{ photo.titre }}</div>
           {% if photo.description %}
-          <p class="card-text" style="font-size:.88rem;color:#9ab8d4;">{{ photo.description }}</p>
+          <div class="overlay-desc">{{ photo.description }}</div>
           {% endif %}
-        </div>
-        <div class="card-footer" style="background:#07101f;border-top:1px solid #1e3a5f;">
-          <small style="color:#4a6a8a;">
-            <i class="bi bi-clock me-1"></i>
-            {{ photo.created_at.strftime('%d/%m/%Y') }}
-            {% if photo.auteur %}
-            &nbsp;·&nbsp;<i class="bi bi-person me-1"></i>{{ photo.auteur.username }}
+          
+          <div class="overlay-meta">
+            <span>
+              <i class="bi bi-clock"></i> {{ photo.created_at.strftime('%d/%m/%Y') }}
+              {% if photo.auteur %}
+              &nbsp;|&nbsp;<i class="bi bi-person"></i> {{ photo.auteur.username }}
+              {% endif %}
+            </span>
+            
+            {% if session.get('user_id') == photo.uploaded_by %}
+            <form action="{{ url_for('supprimer_photo', id=photo.id) }}" method="POST" class="m-0 p-0">
+              <button type="submit" class="btn btn-sm btn-outline-danger border-0" style="color: #ff4d4d;" onclick="return confirm('Supprimer définitivement cette archive ?');">
+                <i class="bi bi-trash-fill"></i>
+              </button>
+            </form>
             {% endif %}
-          </small>
+          </div>
         </div>
+
       </div>
     </div>
     {% endfor %}
   </div>
   {% else %}
-  <div class="text-center py-5" style="color:#4a6a8a;">
-    <i class="bi bi-images" style="font-size:3rem;"></i>
-    <p class="mt-3">Aucune photographie pour l'instant.</p>
+  <div class="text-center py-5" style="color:#b38add;">
+    <i class="bi bi-stars" style="font-size:3rem; color: #00f2ff;"></i>
+    <p class="mt-3">L'espace est vide. Soyez le premier à partager une image.</p>
   </div>
   {% endif %}
 </div>

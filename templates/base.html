@@ -12,20 +12,21 @@
 
   <style>
     :root {
-      --astro-dark: #0a0e1a;
-      --astro-mid:  #10172a;
-      --astro-blue: #1a6fc4;
-      --astro-gold: #f0c060;
+      /* Nouvelles variables de couleur : Thème Nébuleuse Violette */
+      --astro-dark: #0f051d; /* Noir violet très profond (fond principal) */
+      --astro-mid:  #1a0b2e; /* Violet très sombre (fond des cartes) */
+      --astro-blue: #7026b9; /* Violet vif (remplace le bleu pour les boutons) */
+      --astro-gold: #00f2ff; /* Cyan (remplace l'or pour les accents/titres) */
     }
     body {
       background-color: var(--astro-dark);
-      color: #d8e4f0;
+      color: #e0d5f0; /* Texte légèrement teinté violet au lieu de bleu */
       font-family: 'Segoe UI', sans-serif;
     }
     /* ── Navbar ── */
     .navbar {
-      background: linear-gradient(90deg, #05090f 0%, #0d1b35 100%);
-      border-bottom: 1px solid #1e3a5f;
+      background: linear-gradient(90deg, #0a0216 0%, #1a0b2e 100%);
+      border-bottom: 1px solid #3d1d5a; /* Bordures violettes au lieu de bleues */
     }
     .navbar-brand {
       color: var(--astro-gold) !important;
@@ -34,46 +35,50 @@
       letter-spacing: 1px;
     }
     .navbar-brand i { margin-right: 6px; }
-    .nav-link { color: #b0cce0 !important; transition: color .2s; }
+    .nav-link { color: #b38add !important; transition: color .2s; }
     .nav-link:hover, .nav-link.active { color: var(--astro-gold) !important; }
     .nav-item .dropdown-menu {
-      background-color: #0d1b35;
-      border: 1px solid #1e3a5f;
+      background-color: var(--astro-mid);
+      border: 1px solid #3d1d5a;
     }
-    .dropdown-item { color: #b0cce0; }
-    .dropdown-item:hover { background-color: #1a3060; color: var(--astro-gold); }
+    .dropdown-item { color: #b38add; }
+    .dropdown-item:hover { background-color: #2b124c; color: var(--astro-gold); }
 
     /* ── Hero banner ── */
     .hero-banner {
-      background: linear-gradient(135deg, #05090f 0%, #0d1b35 60%, #1a3060 100%);
+      background: linear-gradient(135deg, #0a0216 0%, #1a0b2e 60%, #3d1d5a 100%);
       padding: 60px 0 50px;
       text-align: center;
-      border-bottom: 1px solid #1e3a5f;
+      border-bottom: 1px solid #3d1d5a;
     }
     .hero-banner h1 { color: var(--astro-gold); font-size: 2.6rem; font-weight: 700; }
-    .hero-banner p  { color: #9ab8d4; font-size: 1.1rem; }
+    .hero-banner p  { color: #b38add; font-size: 1.1rem; }
 
     /* ── Cards ── */
     .card {
       background-color: var(--astro-mid);
-      border: 1px solid #1e3a5f;
-      color: #d8e4f0;
+      border: 1px solid #3d1d5a;
+      color: #e0d5f0;
+      transition: transform 0.3s ease, border-color 0.3s ease; /* Ajout d'une animation */
+    }
+    .card:hover {
+      border-color: var(--astro-gold); /* La bordure devient cyan au survol */
     }
     .card-header {
-      background: linear-gradient(90deg, #1a3060 0%, #0d1b35 100%);
-      border-bottom: 1px solid #1e3a5f;
+      background: linear-gradient(90deg, #2b124c 0%, #1a0b2e 100%);
+      border-bottom: 1px solid #3d1d5a;
       font-weight: 600;
     }
 
     /* ── Étoiles (score) ── */
     .stars { color: var(--astro-gold); letter-spacing: 2px; }
-    .stars .empty { color: #3a4a60; }
+    .stars .empty { color: #3d1d5a; }
 
     /* ── Badge catégorie ── */
     .badge-cat {
-      background: #1a3060;
-      color: #f0c060;
-      border: 1px solid #2a4a80;
+      background: #2b124c;
+      color: var(--astro-gold);
+      border: 1px solid #5a2e8c;
       font-size: .78rem;
     }
 
@@ -87,24 +92,24 @@
     .auth-card {
       max-width: 440px; margin: 80px auto;
       background: var(--astro-mid);
-      border: 1px solid #1e3a5f;
+      border: 1px solid #3d1d5a;
       border-radius: 12px;
       padding: 40px;
     }
     .auth-card h2 { color: var(--astro-gold); margin-bottom: 24px; text-align: center; }
 
     .form-control {
-      background-color: #07101f;
-      border: 1px solid #1e3a5f;
-      color: #d8e4f0;
+      background-color: #0a0216;
+      border: 1px solid #3d1d5a;
+      color: #e0d5f0;
     }
     .form-control:focus {
-      background-color: #07101f;
-      border-color: var(--astro-blue);
-      color: #d8e4f0;
-      box-shadow: 0 0 0 .2rem rgba(26,111,196,.3);
+      background-color: #0a0216;
+      border-color: var(--astro-gold);
+      color: #e0d5f0;
+      box-shadow: 0 0 0 .2rem rgba(0, 242, 255, .3); /* Halo cyan au focus */
     }
-    .form-label { color: #9ab8d4; }
+    .form-label { color: #b38add; }
 
     .btn-astro {
       background: var(--astro-blue);
@@ -113,18 +118,18 @@
       font-weight: 600; border-radius: 6px;
       transition: background .2s;
     }
-    .btn-astro:hover { background: #1558a0; color: #fff; }
+    .btn-astro:hover { background: #5a1e94; color: #fff; }
 
     footer {
-      border-top: 1px solid #1e3a5f;
-      background: #05090f;
-      color: #4a6a8a;
+      border-top: 1px solid #3d1d5a;
+      background: #0a0216;
+      color: #6c4b96;
       text-align: center;
       padding: 18px;
       margin-top: 60px;
       font-size: .88rem;
     }
-  </style>
+</style>
   {% block extra_css %}{% endblock %}
 </head>
 <body>

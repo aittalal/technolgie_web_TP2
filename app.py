@@ -1,10 +1,12 @@
 import os
 from flask import Flask, render_template, redirect, url_for, request, flash, session
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from functools import wraps
 
+load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "astro-secret-key-2024")
 
@@ -165,6 +167,45 @@ def photographies():
     photos = Photographie.query.order_by(Photographie.created_at.desc()).all()
     return render_template("photographies.html", photos=photos)
 
+# ── Routes : Ajout et Suppression de photos ──────────────────────────────────
+
+@app.route("/ajouter-photo", methods=["POST"])
+@login_required
+def ajouter_photo():
+    titre = request.form.get("titre", "").strip()
+    description = request.form.get("description", "").strip()
+    url = request.form.get("url", "").strip()
+
+    if titre and url:
+        nouvelle_photo = Photographie(
+            titre=titre,
+            description=description,
+            url=url,
+            uploaded_by=session["user_id"] # On lie la photo à l'utilisateur connecté
+        )
+        db.session.add(nouvelle_photo)
+        db.session.commit()
+        flash("Photographie ajoutée avec succès !", "success")
+    else:
+        flash("Le titre et l'URL de l'image sont obligatoires.", "danger")
+
+    return redirect(url_for("photographies"))
+
+
+@app.route("/supprimer-photo/<int:id>", methods=["POST"])
+@login_required
+def supprimer_photo(id):
+    photo = Photographie.query.get_or_404(id)
+    
+    # Sécurité : on vérifie que l'utilisateur connecté est bien le propriétaire
+    if photo.uploaded_by == session.get("user_id"):
+        db.session.delete(photo)
+        db.session.commit()
+        flash("Photographie supprimée.", "success")
+    else:
+        flash("Vous n'êtes pas autorisé à supprimer cette photo.", "danger")
+
+    return redirect(url_for("photographies"))
 
 # ── Données de démonstration ─────────────────────────────────────────────────
 

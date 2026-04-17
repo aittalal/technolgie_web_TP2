@@ -1,48 +1,133 @@
 {% extends "base.html" %}
 {% block title %}Appareils Photo — AstroSite{% endblock %}
 
+{% block extra_css %}
+<style>
+  /* Style "Fiche Technique / Hardware" pour l'équipement */
+  .tech-card {
+    background: #1a0b2e;
+    border: 1px solid #3d1d5a;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Ligne lumineuse cyan sur le côté gauche */
+  .tech-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 4px; height: 100%;
+    background: #00f2ff;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+  }
+  
+  .tech-card:hover {
+    transform: translateY(-4px);
+    border-color: #00f2ff;
+    box-shadow: 0 8px 25px rgba(0, 242, 255, 0.15);
+  }
+  
+  .tech-card:hover::before {
+    opacity: 1;
+  }
+  
+  .tech-header {
+    background: rgba(43, 18, 76, 0.5);
+    border-bottom: 1px solid #3d1d5a;
+    padding: 15px;
+    font-weight: 700;
+    color: #e0d5f0;
+  }
+  
+  .tech-body {
+    padding: 15px 20px;
+  }
+  
+  .tech-label {
+    color: #b38add;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .tech-value {
+    color: #00f2ff;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  
+  .cat-separator {
+    border-color: #3d1d5a;
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(61, 29, 90, 0.5);
+  }
+  
+  .badge-tech {
+    background: #2b124c;
+    color: #00f2ff;
+    border: 1px solid #00f2ff;
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  
+  /* Étoiles recolorées en Cyan */
+  .stars { color: #00f2ff; }
+  .stars .empty { color: #3d1d5a; }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="hero-banner">
-  <h1><i class="bi bi-camera"></i> Appareils Photo</h1>
-  <p>Sélection d'appareils pour l'astrophotographie</p>
+  <h1><i class="bi bi-cpu"></i> Arsenal Optique</h1>
+  <p>Spécifications techniques des capteurs et boîtiers recommandés</p>
 </div>
 
 <div class="container mt-5">
   {% for cat in categories %}
   <div class="mb-5">
-    <div class="d-flex align-items-center mb-3">
-      <span class="badge badge-cat fs-6 me-3 px-3 py-2">{{ cat }}</span>
-      <hr class="flex-grow-1" style="border-color:#1e3a5f;" />
+    
+    <div class="d-flex align-items-center mb-4">
+      <span class="badge badge-tech fs-6 me-3 px-4 py-2"><i class="bi bi-tag-fill me-2"></i>{{ cat }}</span>
+      <hr class="flex-grow-1 cat-separator" />
     </div>
 
-    <div class="row g-3">
+    <div class="row g-4">
       {% for ap in appareils if ap.categorie == cat %}
       <div class="col-sm-6 col-lg-4">
-        <div class="card h-100">
-          <div class="card-header">
-            <i class="bi bi-camera me-2"></i>{{ ap.marque }} {{ ap.modele }}
+        <div class="tech-card h-100">
+          
+          <div class="tech-header d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-camera me-2" style="color: #00f2ff;"></i>{{ ap.marque }}</span>
+            <span class="tech-value">{{ ap.modele }}</span>
           </div>
-          <div class="card-body">
-            <p class="mb-1">
-              <i class="bi bi-calendar3 me-1" style="color:#9ab8d4;"></i>
-              <small style="color:#9ab8d4;">Sortie :</small> {{ ap.date_sortie }}
-            </p>
-            <p class="mb-0">
-              <small style="color:#9ab8d4;">Score :</small>
-              <span class="stars ms-1">
+          
+          <div class="tech-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="tech-label"><i class="bi bi-calendar-event me-2"></i>Lancement</span>
+              <span class="text-light">{{ ap.date_sortie }}</span>
+            </div>
+            
+            <div class="d-flex justify-content-between align-items-center mt-4 pt-3" style="border-top: 1px dashed #3d1d5a;">
+              <span class="tech-label">Évaluation</span>
+              <span class="stars ms-1 fs-5">
                 {% for i in range(ap.score) %}<i class="bi bi-star-fill"></i>{% endfor %}
                 {% for i in range(5 - ap.score) %}<i class="bi bi-star empty"></i>{% endfor %}
               </span>
-            </p>
+            </div>
           </div>
+          
         </div>
       </div>
       {% else %}
       <div class="col-12">
-        <p class="text-secondary"><em>Aucun appareil dans cette catégorie.</em></p>
+        <p style="color: #b38add;"><em><i class="bi bi-info-circle me-2"></i>Aucun matériel répertorié dans cette classe d'équipement.</em></p>
       </div>
       {% endfor %}
     </div>
+    
   </div>
   {% endfor %}
 </div>
