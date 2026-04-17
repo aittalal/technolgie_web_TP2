@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Inscription — AstroSite{% endblock %}
+
+{% block content %}
+<div class="auth-card shadow">
+  <div class="text-center mb-4">
+    <i class="bi bi-person-plus" style="font-size:2.5rem;color:#f0c060;"></i>
+  </div>
+  <h2>Créer un compte</h2>
+
+  <form method="POST">
+    <div class="mb-3">
+      <label class="form-label" for="username">Nom d'utilisateur</label>
+      <input type="text" class="form-control" id="username" name="username"
+             placeholder="Choisissez un identifiant" required />
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="email">Email</label>
+      <input type="email" class="form-control" id="email" name="email"
+             placeholder="votre@email.com" required />
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="password">Mot de passe</label>
+      <input type="password" class="form-control" id="password" name="password"
+             placeholder="Au moins 6 caractères" required minlength="6" />
+    </div>
+    <div class="mb-4">
+      <label class="form-label" for="confirm">Confirmer le mot de passe</label>
+      <input type="password" class="form-control" id="confirm" name="confirm"
+             placeholder="Répétez le mot de passe" required minlength="6" />
+    </div>
+    <button type="submit" class="btn btn-astro">
+      <i class="bi bi-person-check"></i> S'inscrire
+    </button>
+  </form>
+
+  <hr style="border-color:#1e3a5f;margin:24px 0;" />
+  <p class="text-center" style="color:#9ab8d4;">
+    Déjà un compte ?
+    <a href="{{ url_for('login') }}" style="color:#f0c060;">Se connecter</a>
+  </p>
+</div>
+{% endblock %}

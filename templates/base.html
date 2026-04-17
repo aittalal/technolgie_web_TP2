@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}AstroSite{% endblock %}</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <style>
+    :root {
+      --astro-dark: #0a0e1a;
+      --astro-mid:  #10172a;
+      --astro-blue: #1a6fc4;
+      --astro-gold: #f0c060;
+    }
+    body {
+      background-color: var(--astro-dark);
+      color: #d8e4f0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    /* ── Navbar ── */
+    .navbar {
+      background: linear-gradient(90deg, #05090f 0%, #0d1b35 100%);
+      border-bottom: 1px solid #1e3a5f;
+    }
+    .navbar-brand {
+      color: var(--astro-gold) !important;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .navbar-brand i { margin-right: 6px; }
+    .nav-link { color: #b0cce0 !important; transition: color .2s; }
+    .nav-link:hover, .nav-link.active { color: var(--astro-gold) !important; }
+    .nav-item .dropdown-menu {
+      background-color: #0d1b35;
+      border: 1px solid #1e3a5f;
+    }
+    .dropdown-item { color: #b0cce0; }
+    .dropdown-item:hover { background-color: #1a3060; color: var(--astro-gold); }
+
+    /* ── Hero banner ── */
+    .hero-banner {
+      background: linear-gradient(135deg, #05090f 0%, #0d1b35 60%, #1a3060 100%);
+      padding: 60px 0 50px;
+      text-align: center;
+      border-bottom: 1px solid #1e3a5f;
+    }
+    .hero-banner h1 { color: var(--astro-gold); font-size: 2.6rem; font-weight: 700; }
+    .hero-banner p  { color: #9ab8d4; font-size: 1.1rem; }
+
+    /* ── Cards ── */
+    .card {
+      background-color: var(--astro-mid);
+      border: 1px solid #1e3a5f;
+      color: #d8e4f0;
+    }
+    .card-header {
+      background: linear-gradient(90deg, #1a3060 0%, #0d1b35 100%);
+      border-bottom: 1px solid #1e3a5f;
+      font-weight: 600;
+    }
+
+    /* ── Étoiles (score) ── */
+    .stars { color: var(--astro-gold); letter-spacing: 2px; }
+    .stars .empty { color: #3a4a60; }
+
+    /* ── Badge catégorie ── */
+    .badge-cat {
+      background: #1a3060;
+      color: #f0c060;
+      border: 1px solid #2a4a80;
+      font-size: .78rem;
+    }
+
+    /* ── Photo grid ── */
+    .photo-card img {
+      width: 100%; height: 200px; object-fit: cover;
+      border-radius: 4px;
+    }
+
+    /* ── Auth cards ── */
+    .auth-card {
+      max-width: 440px; margin: 80px auto;
+      background: var(--astro-mid);
+      border: 1px solid #1e3a5f;
+      border-radius: 12px;
+      padding: 40px;
+    }
+    .auth-card h2 { color: var(--astro-gold); margin-bottom: 24px; text-align: center; }
+
+    .form-control {
+      background-color: #07101f;
+      border: 1px solid #1e3a5f;
+      color: #d8e4f0;
+    }
+    .form-control:focus {
+      background-color: #07101f;
+      border-color: var(--astro-blue);
+      color: #d8e4f0;
+      box-shadow: 0 0 0 .2rem rgba(26,111,196,.3);
+    }
+    .form-label { color: #9ab8d4; }
+
+    .btn-astro {
+      background: var(--astro-blue);
+      border: none; color: #fff;
+      width: 100%; padding: 10px;
+      font-weight: 600; border-radius: 6px;
+      transition: background .2s;
+    }
+    .btn-astro:hover { background: #1558a0; color: #fff; }
+
+    footer {
+      border-top: 1px solid #1e3a5f;
+      background: #05090f;
+      color: #4a6a8a;
+      text-align: center;
+      padding: 18px;
+      margin-top: 60px;
+      font-size: .88rem;
+    }
+  </style>
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- ── Navbar Bootstrap ── -->
+{% if session.user_id %}
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="{{ url_for('index') }}">
+      <i class="bi bi-stars"></i> AstroSite
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarMain" aria-controls="navbarMain"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMain">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        <!-- Appareil Photo -->
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'appareils_photo' %}active{% endif %}"
+             href="{{ url_for('appareils_photo') }}">
+            <i class="bi bi-camera"></i> Appareil Photo
+          </a>
+        </li>
+
+        <!-- Photographies -->
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'photographies' %}active{% endif %}"
+             href="{{ url_for('photographies') }}">
+            <i class="bi bi-images"></i> Photographies
+          </a>
+        </li>
+
+        <!-- Téléscopes -->
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'telescopes' %}active{% endif %}"
+             href="{{ url_for('telescopes') }}">
+            <i class="bi bi-telescope"></i> Téléscopes
+          </a>
+        </li>
+
+      </ul>
+
+      <!-- Utilisateur connecté -->
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button"
+             data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle"></i> {{ session.username }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <a class="dropdown-item" href="{{ url_for('logout') }}">
+                <i class="bi bi-box-arrow-right"></i> Se déconnecter
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endif %}
+
+<!-- ── Messages flash ── -->
+<div class="container mt-3">
+  {% for cat, msg in get_flashed_messages(with_categories=true) %}
+  <div class="alert alert-{{ cat }} alert-dismissible fade show" role="alert">
+    {{ msg }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- ── Contenu ── -->
+{% block content %}{% endblock %}
+
+<footer>
+  &copy; 2024 AstroSite — Cours de Technologies Web
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

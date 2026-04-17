@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Connexion — AstroSite{% endblock %}
+
+{% block content %}
+<div class="auth-card shadow">
+  <div class="text-center mb-4">
+    <i class="bi bi-stars" style="font-size:2.5rem;color:#f0c060;"></i>
+  </div>
+  <h2>Connexion</h2>
+
+  <form method="POST">
+    <div class="mb-3">
+      <label class="form-label" for="username">Nom d'utilisateur</label>
+      <input type="text" class="form-control" id="username" name="username"
+             placeholder="Votre identifiant" required autofocus />
+    </div>
+    <div class="mb-4">
+      <label class="form-label" for="password">Mot de passe</label>
+      <input type="password" class="form-control" id="password" name="password"
+             placeholder="••••••••" required />
+    </div>
+    <button type="submit" class="btn btn-astro">
+      <i class="bi bi-box-arrow-in-right"></i> Se connecter
+    </button>
+  </form>
+
+  <hr style="border-color:#1e3a5f;margin:24px 0;" />
+  <p class="text-center" style="color:#9ab8d4;">
+    Pas encore de compte ?
+    <a href="{{ url_for('register') }}" style="color:#f0c060;">Créer un compte</a>
+  </p>
+</div>
+{% endblock %}

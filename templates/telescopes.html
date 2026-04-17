@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Téléscopes — AstroSite{% endblock %}
+
+{% block content %}
+<div class="hero-banner">
+  <h1><i class="bi bi-telescope"></i> Téléscopes</h1>
+  <p>Sélection de téléscopes pour tous les niveaux</p>
+</div>
+
+<div class="container mt-5">
+  {% for cat in categories %}
+  <div class="mb-5">
+    <div class="d-flex align-items-center mb-3">
+      <span class="badge badge-cat fs-6 me-3 px-3 py-2">{{ cat }}</span>
+      <hr class="flex-grow-1" style="border-color:#1e3a5f;" />
+    </div>
+
+    <div class="row g-3">
+      {% for t in telescopes if t.categorie == cat %}
+      <div class="col-sm-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-header">
+            <i class="bi bi-telescope me-2"></i>{{ t.marque }} {{ t.modele }}
+          </div>
+          <div class="card-body">
+            <p class="mb-1">
+              <i class="bi bi-calendar3 me-1" style="color:#9ab8d4;"></i>
+              <small style="color:#9ab8d4;">Sortie :</small> {{ t.date_sortie }}
+            </p>
+            <p class="mb-0">
+              <small style="color:#9ab8d4;">Score :</small>
+              <span class="stars ms-1">
+                {% for i in range(t.score) %}<i class="bi bi-star-fill"></i>{% endfor %}
+                {% for i in range(5 - t.score) %}<i class="bi bi-star empty"></i>{% endfor %}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="col-12">
+        <p class="text-secondary"><em>Aucun téléscope dans cette catégorie.</em></p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

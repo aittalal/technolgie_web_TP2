@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Accueil — AstroSite{% endblock %}
+
+{% block content %}
+<div class="hero-banner">
+  <h1><i class="bi bi-stars"></i> Bienvenue sur AstroSite</h1>
+  <p>La communauté française passionnée d'astronomie et d'astrophotographie</p>
+</div>
+
+<div class="container mt-5">
+  <div class="row g-4 justify-content-center">
+
+    <div class="col-md-4">
+      <div class="card h-100 text-center p-4">
+        <i class="bi bi-camera" style="font-size:3rem;color:#f0c060;"></i>
+        <h4 class="mt-3">Appareils Photo</h4>
+        <p class="text-secondary">Retrouvez notre sélection d'appareils pour l'astrophotographie,
+           du niveau amateur au professionnel.</p>
+        <a href="{{ url_for('appareils_photo') }}" class="btn btn-astro mt-auto">Voir les appareils</a>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card h-100 text-center p-4">
+        <i class="bi bi-images" style="font-size:3rem;color:#f0c060;"></i>
+        <h4 class="mt-3">Photographies</h4>
+        <p class="text-secondary">Admirez les plus belles photos du ciel capturées
+           par notre communauté.</p>
+        <a href="{{ url_for('photographies') }}" class="btn btn-astro mt-auto">Voir les photos</a>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card h-100 text-center p-4">
+        <i class="bi bi-telescope" style="font-size:3rem;color:#f0c060;"></i>
+        <h4 class="mt-3">Téléscopes</h4>
+        <p class="text-secondary">Découvrez notre guide des téléscopes pour chaque niveau
+           et chaque budget.</p>
+        <a href="{{ url_for('telescopes') }}" class="btn btn-astro mt-auto">Voir les téléscopes</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

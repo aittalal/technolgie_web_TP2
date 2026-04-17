@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Appareils Photo — AstroSite{% endblock %}
+
+{% block content %}
+<div class="hero-banner">
+  <h1><i class="bi bi-camera"></i> Appareils Photo</h1>
+  <p>Sélection d'appareils pour l'astrophotographie</p>
+</div>
+
+<div class="container mt-5">
+  {% for cat in categories %}
+  <div class="mb-5">
+    <div class="d-flex align-items-center mb-3">
+      <span class="badge badge-cat fs-6 me-3 px-3 py-2">{{ cat }}</span>
+      <hr class="flex-grow-1" style="border-color:#1e3a5f;" />
+    </div>
+
+    <div class="row g-3">
+      {% for ap in appareils if ap.categorie == cat %}
+      <div class="col-sm-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-header">
+            <i class="bi bi-camera me-2"></i>{{ ap.marque }} {{ ap.modele }}
+          </div>
+          <div class="card-body">
+            <p class="mb-1">
+              <i class="bi bi-calendar3 me-1" style="color:#9ab8d4;"></i>
+              <small style="color:#9ab8d4;">Sortie :</small> {{ ap.date_sortie }}
+            </p>
+            <p class="mb-0">
+              <small style="color:#9ab8d4;">Score :</small>
+              <span class="stars ms-1">
+                {% for i in range(ap.score) %}<i class="bi bi-star-fill"></i>{% endfor %}
+                {% for i in range(5 - ap.score) %}<i class="bi bi-star empty"></i>{% endfor %}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="col-12">
+        <p class="text-secondary"><em>Aucun appareil dans cette catégorie.</em></p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
